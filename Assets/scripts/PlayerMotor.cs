@@ -25,7 +25,7 @@ public class PlayerMotor : MonoBehaviour {
 		FaceDirection(turret, dir, turretRotateSpeed);
 	}
 
-	private void MovePlayer (Vector3 dir) {
+	public void MovePlayer (Vector3 dir) {
 		Vector3 moveDirection = dir * moveSpeed * Time.deltaTime;
 		rb.velocity = moveDirection;
 	}

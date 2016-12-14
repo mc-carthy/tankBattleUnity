@@ -18,7 +18,19 @@ public class PlayerController : MonoBehaviour {
 		pShoot = GetComponent<PlayerShoot>();
 	}
 
-	private Vector2 GetInput () {
+	private void Update () {
+		Vector3 inputDirection = GetInput();
+		if (inputDirection.sqrMagnitude > 0.25f) {
+			pMotor.RotateChassis(inputDirection);
+		}
+	}
+
+	private void FixedUpdate () {
+		Vector3 inputDirection = GetInput();
+		pMotor.MovePlayer(inputDirection);
+	}
+
+	private Vector3 GetInput () {
 		float h = Input.GetAxisRaw("Horizontal");
 		float v = Input.GetAxisRaw("Vertical");
 
