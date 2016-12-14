@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour {
 		if (inputDirection.sqrMagnitude > 0.25f) {
 			pMotor.RotateChassis(inputDirection);
 		}
+		Vector3 turretDir = Utility.GetWorldPointFromScreenPoint(Input.mousePosition, pMotor.transform.position.y) - pMotor.transform.position;
+		pMotor.RotateTurret(turretDir);
 	}
 
 	private void FixedUpdate () {
