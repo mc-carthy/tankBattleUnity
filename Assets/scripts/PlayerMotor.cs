@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMotor : MonoBehaviour {
+public class PlayerMotor : NetworkBehaviour {
 
 	[SerializeField]
 	private Transform chassis;
@@ -9,7 +10,7 @@ public class PlayerMotor : MonoBehaviour {
 	private Transform turret;
 
 	private Rigidbody rb;
-	private float moveSpeed = 100f;
+	private float moveSpeed = 200f;
 	private float chassisRotateSpeed = 1f;
 	private float turretRotateSpeed = 3f;
 

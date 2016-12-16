@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
 [RequireComponent(typeof(PlayerHealth))]
 [RequireComponent(typeof(PlayerMotor))]
 [RequireComponent(typeof(PlayerSetup))]
 [RequireComponent(typeof(PlayerShoot))]
-public class PlayerController : MonoBehaviour {
+public class PlayerController : NetworkBehaviour {
 
 	private PlayerHealth pHealth;
 	private PlayerMotor pMotor;
@@ -19,6 +20,10 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Update () {
+		if (!isLocalPlayer) {
+			return;
+		}
+
 		Vector3 inputDirection = GetInput();
 		if (inputDirection.sqrMagnitude > 0.25f) {
 			pMotor.RotateChassis(inputDirection);
@@ -28,6 +33,10 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void FixedUpdate () {
+		if (!isLocalPlayer) {
+			return;
+		}
+
 		Vector3 inputDirection = GetInput();
 		pMotor.MovePlayer(inputDirection);
 	}

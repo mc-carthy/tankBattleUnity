@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
-public class PlayerShoot : MonoBehaviour {
+public class PlayerShoot : NetworkBehaviour {
 
 
 }

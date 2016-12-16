@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
-public class PlayerSetup : MonoBehaviour {
+public class PlayerSetup : NetworkBehaviour {
 
 
 }
