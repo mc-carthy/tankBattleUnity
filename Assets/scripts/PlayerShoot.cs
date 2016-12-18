@@ -19,17 +19,22 @@ public class PlayerShoot : NetworkBehaviour {
 		isReloading = false;
 	}
 
-	private void Update () {
-		if (Input.GetMouseButtonDown(0)) {
-			Shoot();
-		}
-	}
-
 	public void Shoot () {
 		if (isReloading || bulletPrefab == null) {
 			return;
 		}
 
+		CmdShoot();
+
+		shotsLeft--;
+
+		if (shotsLeft <= 0) {
+			StartCoroutine(Reload());
+		}
+	}
+
+	[CommandAttribute]
+	public void CmdShoot () {
 		Bullet bullet = null;
 		bullet = bulletPrefab.GetComponent<Bullet>();
 
@@ -37,12 +42,7 @@ public class PlayerShoot : NetworkBehaviour {
 
 		if (rb != null) {
 			rb.velocity = bullet.Speed * bulletSpawn.transform.forward;
-		}
-
-		shotsLeft--;
-
-		if (shotsLeft <= 0) {
-			StartCoroutine(Reload());
+			NetworkServer.Spawn(rb.gameObject);
 		}
 	}
 
