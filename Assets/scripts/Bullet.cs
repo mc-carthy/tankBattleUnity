@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,9 +29,30 @@ public class Bullet : NetworkBehaviour {
 		allParticles = GetComponentsInChildren<ParticleSystem>().ToList();
 	}
 
+	private void Start () {
+		StartCoroutine(SelfDestruct());
+	}
+
 	private void OnCollisionExit (Collision other) {
 		if (rb.velocity != Vector3.zero) {
 			transform.rotation = Quaternion.LookRotation(rb.velocity);
 		}
+	}
+
+	private IEnumerator SelfDestruct() {
+		yield return new WaitForSeconds(lifetime);
+		col.enabled = false;
+		rb.velocity = Vector3.zero;
+		rb.Sleep();
+
+		foreach (MeshRenderer mr in GetComponentsInChildren<MeshRenderer>()) {
+			mr.enabled = false;
+		}
+
+		foreach (ParticleSystem ps in allParticles) {
+			ps.Stop();
+		}
+
+		Destroy(gameObject);
 	}
 }

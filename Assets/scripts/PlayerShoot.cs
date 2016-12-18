@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections;
 
 public class PlayerShoot : NetworkBehaviour {
 
@@ -37,6 +38,19 @@ public class PlayerShoot : NetworkBehaviour {
 		if (rb != null) {
 			rb.velocity = bullet.Speed * bulletSpawn.transform.forward;
 		}
+
+		shotsLeft--;
+
+		if (shotsLeft <= 0) {
+			StartCoroutine(Reload());
+		}
+	}
+
+	private IEnumerator Reload () {
+		shotsLeft = shotsPerBurst;
+		isReloading = true;
+		yield return new WaitForSeconds(reloadTime);
+		isReloading = false;
 	}
 
 }
