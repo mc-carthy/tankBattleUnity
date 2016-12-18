@@ -64,10 +64,6 @@ public class Bullet : NetworkBehaviour {
 		rb.velocity = Vector3.zero;
 		rb.Sleep();
 
-		foreach (MeshRenderer mr in GetComponentsInChildren<MeshRenderer>()) {
-			mr.enabled = false;
-		}
-
 		foreach (ParticleSystem ps in allParticles) {
 			ps.Stop();
 		}
@@ -77,6 +73,11 @@ public class Bullet : NetworkBehaviour {
 			explosionFx.Play();
 		}
 
-		Destroy(gameObject);
+		if (isServer) {
+			foreach (MeshRenderer mr in GetComponentsInChildren<MeshRenderer>()) {
+				mr.enabled = false;
+			}
+			Destroy(gameObject);
+		}
 	}
 }
