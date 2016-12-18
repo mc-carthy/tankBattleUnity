@@ -20,6 +20,10 @@ public class Bullet : NetworkBehaviour {
 	private ParticleSystem explosionFx;
 	[SerializeField]
 	private float lifetime = 5f;
+	[SerializeField]
+	private int bounces = 2;
+	[SerializeField]
+	private List<string> bounceTags;
 
 	private Rigidbody rb;
 	private Collider col;
@@ -35,6 +39,15 @@ public class Bullet : NetworkBehaviour {
 		StartCoroutine(SelfDestruct());
 	}
 
+	private void OnCollisionEnter (Collision other) {
+		if (bounceTags.Contains(other.gameObject.tag)) {
+			if (bounces <= 0) {
+				Explode();
+			}
+			bounces--;
+		}
+	}
+
 	private void OnCollisionExit (Collision other) {
 		if (rb.velocity != Vector3.zero) {
 			transform.rotation = Quaternion.LookRotation(rb.velocity);
@@ -43,6 +56,10 @@ public class Bullet : NetworkBehaviour {
 
 	private IEnumerator SelfDestruct() {
 		yield return new WaitForSeconds(lifetime);
+		Explode();
+	}
+
+	private void Explode () {
 		col.enabled = false;
 		rb.velocity = Vector3.zero;
 		rb.Sleep();
