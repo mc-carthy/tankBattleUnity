@@ -6,13 +6,13 @@ using System.Linq;
 public class Bullet : NetworkBehaviour {
 
 	[SerializeField]
-	private float speed = 100f;
+	private float speed = 20f;
 	public float Speed {
 		get {
 			return speed;
 		}
 	}
-	
+
 	[SerializeField]
 	private float lifetime = 5f;
 
