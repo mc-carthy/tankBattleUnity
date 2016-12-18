@@ -17,6 +17,8 @@ public class Bullet : NetworkBehaviour {
 	}
 
 	[SerializeField]
+	private ParticleSystem explosionFx;
+	[SerializeField]
 	private float lifetime = 5f;
 
 	private Rigidbody rb;
@@ -51,6 +53,11 @@ public class Bullet : NetworkBehaviour {
 
 		foreach (ParticleSystem ps in allParticles) {
 			ps.Stop();
+		}
+
+		if (explosionFx != null) {
+			explosionFx.transform.parent = null;
+			explosionFx.Play();
 		}
 
 		Destroy(gameObject);
