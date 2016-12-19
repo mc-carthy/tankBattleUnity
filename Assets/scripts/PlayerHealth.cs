@@ -20,9 +20,12 @@ public class PlayerHealth : NetworkBehaviour {
 	private RectTransform healthBar;
 
 	private float maxHealth = 3f;
+	private float initialRectWidth;
 
 	private void Start () {
-		currentHealth = maxHealth;
+		initialRectWidth = healthBar.rect.width;
+		Reset();
+		UpdateHealthBar(currentHealth);
 	}
 
 	public void Damage (float damage) {
@@ -36,6 +39,12 @@ public class PlayerHealth : NetworkBehaviour {
 			isDead = true;
 			RpcDie();
 		}
+	}
+
+	public void Reset () {
+		currentHealth = maxHealth;
+		SetActiveState(true);
+		isDead = false;
 	}
 
 	[ClientRpc]
@@ -66,7 +75,7 @@ public class PlayerHealth : NetworkBehaviour {
 
 	private void UpdateHealthBar (float value) {
 		if (healthBar != null) {
-			healthBar.sizeDelta = new Vector2(value / maxHealth * healthBar.rect.width, healthBar.sizeDelta.y);
+			healthBar.sizeDelta = new Vector2(value / maxHealth * initialRectWidth, healthBar.sizeDelta.y);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections;
 
 [RequireComponent(typeof(PlayerHealth))]
 [RequireComponent(typeof(PlayerMotor))]
@@ -11,6 +12,8 @@ public class PlayerController : NetworkBehaviour {
 	private PlayerMotor pMotor;
 	private PlayerSetup pSetup;
 	private PlayerShoot pShoot;
+
+	private float respawnTime = 3f;
 
 	private void Awake () {
 		pHealth = GetComponent<PlayerHealth>();
@@ -52,4 +55,14 @@ public class PlayerController : NetworkBehaviour {
 		return new Vector3 (h, 0, v);
 	}
 
+	private void Disable () {
+		StartCoroutine(RespawnRoutine());
+	}
+
+	private IEnumerator RespawnRoutine () {
+		transform.position = Vector3.zero;
+		pMotor.Rb.velocity = Vector3.zero;
+		yield return new WaitForSeconds (respawnTime);
+		pHealth.Reset();
+	}
 }

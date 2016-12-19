@@ -4,12 +4,18 @@ using UnityEngine.Networking;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMotor : NetworkBehaviour {
 
+	private Rigidbody rb;
+	public Rigidbody Rb {
+		get {
+			return rb;
+		}
+	}	
+
 	[SerializeField]
 	private Transform chassis;
 	[SerializeField]
 	private Transform turret;
 
-	private Rigidbody rb;
 	private float moveSpeed = 200f;
 	private float chassisRotateSpeed = 1f;
 	private float turretRotateSpeed = 3f;
