@@ -25,6 +25,8 @@ public class PlayerController : NetworkBehaviour {
 		pMotor = GetComponent<PlayerMotor>();
 		pSetup = GetComponent<PlayerSetup>();
 		pShoot = GetComponent<PlayerShoot>();
+
+		GameManager gm = GameManager.Instance;
 	}
 
 	private void Update () {
