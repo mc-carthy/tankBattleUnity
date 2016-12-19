@@ -24,10 +24,13 @@ public class Bullet : NetworkBehaviour {
 	private int bounces = 2;
 	[SerializeField]
 	private List<string> bounceTags;
+	[SerializeField]
+	private List<string> damageTags;
 
 	private Rigidbody rb;
 	private Collider col;
 	private List<ParticleSystem> allParticles;
+	private float damage = 1f;
 
 	private void Awake () {
 		rb = GetComponent<Rigidbody>();
@@ -40,6 +43,8 @@ public class Bullet : NetworkBehaviour {
 	}
 
 	private void OnCollisionEnter (Collision other) {
+		CheckCollisions(other);
+		
 		if (bounceTags.Contains(other.gameObject.tag)) {
 			if (bounces <= 0) {
 				Explode();
@@ -78,6 +83,17 @@ public class Bullet : NetworkBehaviour {
 				mr.enabled = false;
 			}
 			Destroy(gameObject);
+		}
+	}
+
+	private void CheckCollisions (Collision other) {
+		if (damageTags.Contains(other.gameObject.tag)) {
+			Explode();
+			PlayerHealth playerHealth = other.gameObject.GetComponent<PlayerHealth>();
+
+			if (playerHealth != null) {
+				playerHealth.Damage(damage);
+			}
 		}
 	}
 }
