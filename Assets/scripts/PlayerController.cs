@@ -20,7 +20,7 @@ public class PlayerController : NetworkBehaviour {
 	}
 
 	private void Update () {
-		if (!isLocalPlayer) {
+		if (!isLocalPlayer || pHealth.IsDead) {
 			return;
 		}
 
@@ -37,7 +37,7 @@ public class PlayerController : NetworkBehaviour {
 	}
 
 	private void FixedUpdate () {
-		if (!isLocalPlayer) {
+		if (!isLocalPlayer || pHealth.IsDead) {
 			return;
 		}
 

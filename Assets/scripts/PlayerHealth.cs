@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
-using System.Collections;
 
 public class PlayerHealth : NetworkBehaviour {
 
-	[SyncVar(hook="UpdateHealthBar")]
-	private float currentHealth;
 	[SyncVar]
 	private bool isDead;
+	public bool IsDead {
+		get {
+			return isDead;
+		}
+	}
+
+	[SyncVar(hook="UpdateHealthBar")]
+	private float currentHealth;
 
 	[SerializeField]
 	private GameObject deathPrefab;
