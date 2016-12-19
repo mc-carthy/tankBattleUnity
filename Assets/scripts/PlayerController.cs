@@ -8,6 +8,9 @@ using System.Collections;
 [RequireComponent(typeof(PlayerShoot))]
 public class PlayerController : NetworkBehaviour {
 
+	[SerializeField]
+	private GameObject spawnFxPrefab;
+
 	private PlayerHealth pHealth;
 	private PlayerMotor pMotor;
 	private PlayerSetup pSetup;
@@ -71,6 +74,11 @@ public class PlayerController : NetworkBehaviour {
 		pMotor.Rb.velocity = Vector3.zero;
 		yield return new WaitForSeconds (respawnTime);
 		pHealth.Reset();
+
+		if (spawnFxPrefab != null) {
+			GameObject spawnFx = Instantiate(spawnFxPrefab, transform.position + Vector3.up * 0.5f, Quaternion.identity) as GameObject;
+			Destroy(spawnFx, 3f);
+		}
 	}
 
 	private Vector3 GetRandomSpawnPoint () {
