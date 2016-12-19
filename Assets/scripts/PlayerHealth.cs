@@ -5,12 +5,14 @@ using System.Collections;
 
 public class PlayerHealth : NetworkBehaviour {
 
+	[SyncVar(hook="UpdateHealthBar")]
+	private float currentHealth;
+	
 	[SerializeField]
 	private GameObject deathPrefab;
 	[SerializeField]
 	private RectTransform healthBar;
 
-	private float currentHealth;
 	private float maxHealth = 3f;
 	private bool isDead;
 
@@ -20,8 +22,12 @@ public class PlayerHealth : NetworkBehaviour {
 	}
 
 	public void Damage (float damage) {
+
+		if (!isServer) {
+			return;
+		}
+
 		currentHealth -= damage;
-		UpdateHealthBar(currentHealth);
 		if (currentHealth <= 0 && !isDead) {
 			isDead = true;
 			Die();
