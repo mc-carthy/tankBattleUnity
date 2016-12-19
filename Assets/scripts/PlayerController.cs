@@ -13,6 +13,8 @@ public class PlayerController : NetworkBehaviour {
 	private PlayerSetup pSetup;
 	private PlayerShoot pShoot;
 
+	private NetworkStartPosition[] spawnPoints;
+	private Vector3 originalPosition;
 	private float respawnTime = 3f;
 
 	private void Awake () {
@@ -48,6 +50,11 @@ public class PlayerController : NetworkBehaviour {
 		pMotor.MovePlayer(inputDirection);
 	}
 
+	public override void OnStartLocalPlayer () {
+		spawnPoints = GameObject.FindObjectsOfType<NetworkStartPosition>();
+		originalPosition = transform.position;
+	}
+
 	private Vector3 GetInput () {
 		float h = Input.GetAxisRaw("Horizontal");
 		float v = Input.GetAxisRaw("Vertical");
@@ -60,9 +67,18 @@ public class PlayerController : NetworkBehaviour {
 	}
 
 	private IEnumerator RespawnRoutine () {
-		transform.position = Vector3.zero;
+		transform.position = GetRandomSpawnPoint();
 		pMotor.Rb.velocity = Vector3.zero;
 		yield return new WaitForSeconds (respawnTime);
 		pHealth.Reset();
+	}
+
+	private Vector3 GetRandomSpawnPoint () {
+		if  (spawnPoints != null) {
+			if (spawnPoints.Length > 0) {
+				return spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position;
+			}
+		}
+		return originalPosition;
 	}
 }
