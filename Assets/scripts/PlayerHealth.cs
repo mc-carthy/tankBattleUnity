@@ -7,15 +7,15 @@ public class PlayerHealth : NetworkBehaviour {
 
 	[SyncVar(hook="UpdateHealthBar")]
 	private float currentHealth;
-	
+	[SyncVar]
+	private bool isDead;
+
 	[SerializeField]
 	private GameObject deathPrefab;
 	[SerializeField]
 	private RectTransform healthBar;
 
 	private float maxHealth = 3f;
-	private bool isDead;
-
 
 	private void Start () {
 		currentHealth = maxHealth;
@@ -30,11 +30,12 @@ public class PlayerHealth : NetworkBehaviour {
 		currentHealth -= damage;
 		if (currentHealth <= 0 && !isDead) {
 			isDead = true;
-			Die();
+			RpcDie();
 		}
 	}
 
-	private void Die () {
+	[ClientRpc]
+	private void RpcDie () {
 		if (deathPrefab != null) {
 			GameObject deathFx = Instantiate(deathPrefab, transform.position + Vector3.up * 0.5f, Quaternion.identity) as GameObject;
 			Destroy(deathFx.gameObject, 3f);
