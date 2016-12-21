@@ -4,14 +4,33 @@ using UnityEngine.UI;
 
 public class PlayerSetup : NetworkBehaviour {
 
-	[SerializeField]
+	[SyncVarAttribute(hook="UpdateColor")]
 	private Color playerColor;
-	[SerializeField]
-	private string baseName = "Player";
-	[SerializeField]
-	private int playerNum = 1;
+	public Color PlayerColor {
+		set {
+			playerColor = value;
+		}
+	}
+
+	[SyncVarAttribute(hook="UpdateName")]
+	private int playerNum;
+	public int PlayerNum {
+		set {
+			playerNum = value;
+		}
+	}
+
 	[SerializeField]
 	private Text playerNameText;
+
+	private string baseName = "Player";
+
+	private void Start () {
+		if (!isLocalPlayer) {
+			UpdateName(playerNum);
+			UpdateColor(playerColor);
+		}
+	}
 
 	public override void OnStartClient () {
 		base.OnStartClient();
@@ -23,18 +42,26 @@ public class PlayerSetup : NetworkBehaviour {
 
 	public override void OnStartLocalPlayer () {
 		base.OnStartLocalPlayer();
+		CmdSetupPlayer();
+	}
 
+	private void UpdateColor (Color pColor) {
 		MeshRenderer[] meshes = GetComponentsInChildren<MeshRenderer>();
 
 		foreach (MeshRenderer mesh in meshes) {
-			mesh.material.color = playerColor;
-		}
-
-		if (playerNameText != null) {
-			playerNameText.enabled = true;
-			playerNameText.text = baseName + playerNum.ToString();
+			mesh.material.color = pColor;
 		}
 	}
 
+	private void UpdateName (int pNum) {
+		if (playerNameText != null) {
+			playerNameText.enabled = true;
+			playerNameText.text = baseName + pNum.ToString();
+		}
+	}
 
+	[CommandAttribute]
+	private void CmdSetupPlayer () {
+		GameManager.Instance.AddPlayer(this);
+	}
 }

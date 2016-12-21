@@ -3,7 +3,7 @@ using UnityEngine.Networking;
 
 public class PlayerHealth : NetworkBehaviour {
 
-	[SyncVar]
+	[SyncVarAttribute]
 	private bool isDead;
 	public bool IsDead {
 		get {
@@ -11,7 +11,7 @@ public class PlayerHealth : NetworkBehaviour {
 		}
 	}
 
-	[SyncVar(hook="UpdateHealthBar")]
+	[SyncVarAttribute(hook="UpdateHealthBar")]
 	private float currentHealth;
 
 	[SerializeField]
