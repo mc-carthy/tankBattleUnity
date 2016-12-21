@@ -8,6 +8,16 @@ using System.Collections;
 [RequireComponent(typeof(PlayerShoot))]
 public class PlayerController : NetworkBehaviour {
 
+	private int score;
+	public int Score {
+		get {
+			return score;
+		}
+		set {
+			score = value;
+		}
+	}
+
 	[SerializeField]
 	private GameObject spawnFxPrefab;
 

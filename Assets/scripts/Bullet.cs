@@ -16,6 +16,13 @@ public class Bullet : NetworkBehaviour {
 		}
 	}
 
+	private PlayerController owner;
+	public PlayerController Owner {
+		set {
+			owner = value;
+		}
+	}
+
 	[SerializeField]
 	private ParticleSystem explosionFx;
 	[SerializeField]
@@ -44,7 +51,7 @@ public class Bullet : NetworkBehaviour {
 
 	private void OnCollisionEnter (Collision other) {
 		CheckCollisions(other);
-		
+
 		if (bounceTags.Contains(other.gameObject.tag)) {
 			if (bounces <= 0) {
 				Explode();
@@ -92,7 +99,7 @@ public class Bullet : NetworkBehaviour {
 			PlayerHealth playerHealth = other.gameObject.GetComponent<PlayerHealth>();
 
 			if (playerHealth != null) {
-				playerHealth.Damage(damage);
+				playerHealth.Damage(damage, owner);
 			}
 		}
 	}

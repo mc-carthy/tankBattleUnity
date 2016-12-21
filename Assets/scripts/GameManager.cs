@@ -27,7 +27,7 @@ public class GameManager : NetworkBehaviour {
 	private Text messageText;	
 	
 	private Color[] playerColors = { Color.red, Color.blue, Color.green, Color.yellow };
-	private int minPlayers = 2;
+	private int minPlayers = 1;
 	private int maxPlayers = 4;
 
 	private void Awake () {
@@ -47,7 +47,6 @@ public class GameManager : NetworkBehaviour {
 			pSetup.PlayerColor = playerColors[playerCount];
 			playerCount++;
 			pSetup.PlayerNum = playerCount;
-			Debug.Log(playerCount);
 		}
 	}
 

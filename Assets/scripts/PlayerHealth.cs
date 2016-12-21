@@ -19,6 +19,7 @@ public class PlayerHealth : NetworkBehaviour {
 	[SerializeField]
 	private RectTransform healthBar;
 
+	private PlayerController lastAttacker;
 	private float maxHealth = 3f;
 	private float initialRectWidth;
 
@@ -28,14 +29,22 @@ public class PlayerHealth : NetworkBehaviour {
 		UpdateHealthBar(currentHealth);
 	}
 
-	public void Damage (float damage) {
+	public void Damage (float damage, PlayerController pc = null) {
 
 		if (!isServer) {
 			return;
 		}
 
+		if (pc != null) {
+			lastAttacker = pc;
+		}
+
 		currentHealth -= damage;
 		if (currentHealth <= 0 && !isDead) {
+			if (lastAttacker != null) {
+				lastAttacker.Score++;
+				lastAttacker = null;
+			}
 			isDead = true;
 			RpcDie();
 		}
