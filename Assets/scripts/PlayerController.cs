@@ -88,7 +88,14 @@ public class PlayerController : NetworkBehaviour {
 	}
 
 	private IEnumerator RespawnRoutine () {
+		SpawnPoint oldSpawn = GetNearestSpawnPoint();
+
 		transform.position = GetRandomSpawnPoint();
+		
+		if (oldSpawn != null) {
+			oldSpawn.IsOccupied = false;
+		}
+
 		pMotor.Rb.velocity = Vector3.zero;
 		yield return new WaitForSeconds (respawnTime);
 		pHealth.Reset();
@@ -102,9 +109,35 @@ public class PlayerController : NetworkBehaviour {
 	private Vector3 GetRandomSpawnPoint () {
 		if  (spawnPoints != null) {
 			if (spawnPoints.Length > 0) {
-				return spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position;
+				bool isFreeSpawner = false;
+				Vector3 newStartPos = originalPosition;
+
+				float timeOut = Time.time + 2f;
+
+				while (!isFreeSpawner && Time < timeOut) {
+					NetworkStartPosition startPoint = spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position;
+					SpawnPoint spawnPoint = startPoint.GetComponent<SpawnPoint>();
+
+					if (spawnPoint.IsOccupied == false) {
+						isFreeSpawner = true;
+						newStartPos = startPoint.transform.position;
+					}
+				}
+				return newStartPos;
 			}
 		}
 		return originalPosition;
+	}
+
+	private SpawnPoint GetNearestSpawnPoint () {
+		Collider[] triggerColliders = Physics.OverlapSphere(transform.position, 3f, Physics.AllLayers, QueryTriggerInteraction.Collide);
+
+		foreach (Collider c in triggerColliders) {
+			SpawnPoint spawnPoint = c.GetComponent<SpawnPoint>();
+			if (spawnPoint != null) {
+				return spawnPoint;
+			}
+		}
+		return null;
 	}
 }

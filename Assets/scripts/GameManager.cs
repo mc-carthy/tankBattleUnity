@@ -163,7 +163,7 @@ public class GameManager : NetworkBehaviour {
 
 	private void DisablePlayers () {
 		if (isServer) {
-			RpcSetPlayerState(false);
+				RpcSetPlayerState(false);
 		}
 	}
 

@@ -1,16 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SpawnPoint : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
+	private bool isOccupied;
+	public bool IsOccupied {
+		get {
+			return isOccupied;
+		}
+		set {
+			isOccupied = value;
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	private void OnTriggerEnter (Collider other) {
+		if (other.gameObject.CompareTag("Player")) {
+			isOccupied = true;
+		}
 	}
+
+	private void OnTriggerStay (Collider other) {
+		if (other.gameObject.CompareTag("Player")) {
+			isOccupied = true;
+		}
+	}
+
+	private void OnTriggerExit (Collider other) {
+		if (other.gameObject.CompareTag("Player")) {
+			isOccupied = false;
+		}
+	}
+
 }
