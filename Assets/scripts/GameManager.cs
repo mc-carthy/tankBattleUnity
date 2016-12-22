@@ -25,7 +25,7 @@ public class GameManager : NetworkBehaviour {
 		}
 	}
 
-	public List<PlayerController> allPlayers; // TODO - Only works when public, not whem private or a property, fix
+	public List<PlayerManager> allPlayers; // TODO - Only works when public, not whem private or a property, fix
 
 	[SerializeField]
 	private Text messageText;	
@@ -35,7 +35,7 @@ public class GameManager : NetworkBehaviour {
 	private List<Text> playerScoreText;
 
 	private Color[] playerColors = { Color.red, Color.blue, Color.green, Color.yellow };
-	private PlayerController winner;
+	private PlayerManager winner;
 	private int minPlayers = 2;
 	private int maxPlayers = 4;
 	private int maxScore = 3;
@@ -54,7 +54,7 @@ public class GameManager : NetworkBehaviour {
 
 	public void AddPlayer (PlayerSetup pSetup) {
 		if (playerCount < maxPlayers) {
-			allPlayers.Add(pSetup.GetComponent<PlayerController>());
+			allPlayers.Add(pSetup.GetComponent<PlayerManager>());
 			pSetup.PlayerColor = playerColors[playerCount];
 			playerCount++;
 			pSetup.PlayerNum = playerCount;
@@ -128,7 +128,7 @@ public class GameManager : NetworkBehaviour {
 
 		UpdateMessage("");
 
-		PlayerController winner = null;
+		PlayerManager winner = null;
 		while (isGameOver == false) {
 			yield return null;
 		}
@@ -148,9 +148,9 @@ public class GameManager : NetworkBehaviour {
 
 	[ClientRpcAttribute]
 	private void RpcSetPlayerState (bool state) {
-		PlayerController[] allPlayers = GameObject.FindObjectsOfType<PlayerController>();
+		PlayerManager[] allPlayers = GameObject.FindObjectsOfType<PlayerManager>();
 
-		foreach (PlayerController pc in allPlayers) {
+		foreach (PlayerManager pc in allPlayers) {
 			pc.enabled = state;
 		}
 	}
@@ -189,14 +189,14 @@ public class GameManager : NetworkBehaviour {
 
 	[ClientRpcAttribute]
 	private void RpcReset () {
-		PlayerController[] allPlayers = GameObject.FindObjectsOfType<PlayerController>();
+		PlayerManager[] allPlayers = GameObject.FindObjectsOfType<PlayerManager>();
 		
-		foreach (PlayerController pc in allPlayers) {
+		foreach (PlayerManager pc in allPlayers) {
 			pc.Score = 0;
 		}
 	}
 
-	private PlayerController GetWinner () {
+	private PlayerManager GetWinner () {
 		if (isServer) {
 			for (int i = 0; i < playerCount; i++)
 			{

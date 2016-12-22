@@ -61,7 +61,7 @@ public class PlayerShoot : NetworkBehaviour {
 
 		if (rb != null) {
 			rb.velocity = bullet.Speed * bulletSpawn.transform.forward;
-			bullet.Owner = GetComponent<PlayerController>();
+			bullet.Owner = GetComponent<PlayerManager>();
 			NetworkServer.Spawn(rb.gameObject);
 		}
 	}

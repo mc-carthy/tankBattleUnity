@@ -6,7 +6,7 @@ using System.Collections;
 [RequireComponent(typeof(PlayerMotor))]
 [RequireComponent(typeof(PlayerSetup))]
 [RequireComponent(typeof(PlayerShoot))]
-public class PlayerController : NetworkBehaviour {
+public class PlayerManager : NetworkBehaviour {
 
 	private PlayerSetup pSetup;
 	public PlayerSetup PSetup {

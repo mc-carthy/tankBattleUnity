@@ -16,8 +16,8 @@ public class Bullet : NetworkBehaviour {
 		}
 	}
 
-	private PlayerController owner;
-	public PlayerController Owner {
+	private PlayerManager owner;
+	public PlayerManager Owner {
 		set {
 			owner = value;
 		}

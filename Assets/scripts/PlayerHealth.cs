@@ -19,7 +19,7 @@ public class PlayerHealth : NetworkBehaviour {
 	[SerializeField]
 	private RectTransform healthBar;
 
-	private PlayerController lastAttacker;
+	private PlayerManager lastAttacker;
 	private float maxHealth = 3f;
 	private float initialRectWidth;
 
@@ -29,13 +29,13 @@ public class PlayerHealth : NetworkBehaviour {
 		UpdateHealthBar(currentHealth);
 	}
 
-	public void Damage (float damage, PlayerController pc = null) {
+	public void Damage (float damage, PlayerManager pc = null) {
 
 		if (!isServer) {
 			return;
 		}
 
-		if (pc != null && pc != this.GetComponent<PlayerController>()) {
+		if (pc != null && pc != this.GetComponent<PlayerManager>()) {
 			lastAttacker = pc;
 		}
 
