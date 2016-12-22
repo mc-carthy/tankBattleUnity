@@ -45,7 +45,7 @@ public class PlayerHealth : NetworkBehaviour {
 				lastAttacker.Score++;
 				lastAttacker = null;
 			}
-			// GameManager.Instance.UpdateScoreboard();
+			GameManager.Instance.UpdateScoreboard();
 			isDead = true;
 			RpcDie();
 		}

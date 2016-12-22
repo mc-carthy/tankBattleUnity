@@ -63,6 +63,23 @@ public class GameManager : NetworkBehaviour {
 		}
 	}
 
+	[ServerAttribute]
+	public void UpdateScoreboard () {
+		string[] pNames = new string[allPlayers.Count];
+		int[] pScores = new int[allPlayers.Count];
+
+		Debug.Log(allPlayers.Count);
+
+		for (int i = 0; i < allPlayers.Count; i++) {
+			if (allPlayers[i] != null) {
+				pNames[i] = allPlayers[i].GetComponent<PlayerSetup>().PlayerName;
+				pScores[i] = allPlayers[i].Score;
+			}
+		}
+
+		RpcUpdateScoreboard(pNames, pScores);
+	}
+
 	public void Reset () {
 		for (int i = 0; i < allPlayers.Count; i++) {
 			PlayerHealth pHealth = allPlayers[i].GetComponent<PlayerHealth>();
@@ -96,6 +113,7 @@ public class GameManager : NetworkBehaviour {
 	private IEnumerator StartGame () {
 		Reset();
 		RpcStartGame();
+		UpdateScoreboard();
 		yield return new WaitForSeconds(3f);
 	}
 
@@ -137,17 +155,17 @@ public class GameManager : NetworkBehaviour {
 		}
 	}
 
-	// [ClientRpcAttribute]
-	// private void RpcUpdateScoreboard (string[] playerNames, int[] playerScores) {
-	// 	for (int i = 0; i < playerCount; i++) {
-	// 		if (playerNameText[i] != null) {
-	// 			playerNameText[i].text = playerNames[i];
-	// 		}
-	// 		if (playerScoreText[i] != null) {
-	// 			playerScoreText[i].text = playerScores[i].ToString();
-	// 		}
-	// 	}
-	// }
+	[ClientRpcAttribute]
+	private void RpcUpdateScoreboard (string[] playerNames, int[] playerScores) {
+		for (int i = 0; i < allPlayers.Count; i++) {
+			if (playerNameText[i] != null) {
+				playerNameText[i].text = playerNames[i];
+			}
+			if (playerScoreText[i] != null) {
+				playerScoreText[i].text = playerScores[i].ToString();
+			}
+		}
+	}
 
 	[ClientRpcAttribute]
 	private void RpcUpdateMessage(string msg) {
@@ -163,7 +181,6 @@ public class GameManager : NetworkBehaviour {
 	[ClientRpcAttribute]
 	private void RpcPlayGame() {
 		EnablePlayers();
-		// UpdateScoreboard();
 		UpdateMessage("");
 	}
 
