@@ -10,6 +10,11 @@ public class NetworkLobbyHook : LobbyHook {
 
 		pSetup.PlayerName = lPlayer.playerName;
 		pSetup.PlayerColor = lPlayer.playerColor;
+
+		PlayerManager pManager = gamePlayer.GetComponent<PlayerManager>();
+		if (pManager != null) {
+			GameManager.allPlayers.Add(pManager);
+		}
 	}
 
 }

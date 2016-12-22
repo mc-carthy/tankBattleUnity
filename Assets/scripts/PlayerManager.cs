@@ -8,13 +8,7 @@ using System.Collections;
 [RequireComponent(typeof(PlayerShoot))]
 public class PlayerManager : NetworkBehaviour {
 
-	private PlayerSetup pSetup;
-	public PlayerSetup PSetup {
-		get {
-			return pSetup;
-		}
-	}
-	
+	[SyncVarAttribute]
 	private int score;
 	public int Score {
 		get {
@@ -22,6 +16,13 @@ public class PlayerManager : NetworkBehaviour {
 		}
 		set {
 			score = value;
+		}
+	}
+	
+	private PlayerSetup pSetup;
+	public PlayerSetup PSetup {
+		get {
+			return pSetup;
 		}
 	}
 
@@ -43,6 +44,10 @@ public class PlayerManager : NetworkBehaviour {
 		pShoot = GetComponent<PlayerShoot>();
 
 		GameManager gm = GameManager.Instance;
+	}
+
+	private void OnDestroy () {
+		GameManager.allPlayers.Remove(this);
 	}
 
 	private void Update () {

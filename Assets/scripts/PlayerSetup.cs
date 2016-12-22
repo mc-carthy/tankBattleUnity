@@ -23,13 +23,6 @@ public class PlayerSetup : NetworkBehaviour {
 		}
 	}
 
-	// private int playerNum;
-	// public int PlayerNum {
-	// 	set {
-	// 		playerNum = value;
-	// 	}
-	// }
-
 	[SerializeField]
 	private Text playerNameText;
 	public Text PlayerNameText {
@@ -38,18 +31,18 @@ public class PlayerSetup : NetworkBehaviour {
 		}
 	}
 
-	private void Start () {
-		UpdateName(playerName);
-		UpdateColor(playerColor);
-	}
-
 	public override void OnStartClient () {
 		base.OnStartClient();
-	}
 
-	public override void OnStartLocalPlayer () {
-		base.OnStartLocalPlayer();
-		CmdSetupPlayer();
+		if (!isServer) {
+			PlayerManager pManager = GetComponent<PlayerManager>();
+			if (pManager != null) {
+				GameManager.allPlayers.Add(pManager);
+			}
+		}
+		
+		UpdateName(playerName);
+		UpdateColor(playerColor);
 	}
 
 	private void UpdateColor (Color pColor) {
@@ -65,10 +58,5 @@ public class PlayerSetup : NetworkBehaviour {
 			playerNameText.enabled = true;
 			playerNameText.text = pName;
 		}
-	}
-
-	[CommandAttribute]
-	private void CmdSetupPlayer () {
-		GameManager.Instance.AddPlayer(this);
 	}
 }
