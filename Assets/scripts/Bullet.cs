@@ -38,7 +38,7 @@ public class Bullet : NetworkBehaviour {
 	private Collider col;
 	private List<ParticleSystem> allParticles;
 	private float damage = 1f;
-	private float fuseTime = 0.025f;
+	private float fuseTime = 0.05f;
 
 	private void Awake () {
 		rb = GetComponent<Rigidbody>();
@@ -68,7 +68,7 @@ public class Bullet : NetworkBehaviour {
 	}
 
 	private IEnumerator SelfDestruct() {
-		
+
 		col.enabled = false;
 
 		yield return new WaitForSeconds (fuseTime);

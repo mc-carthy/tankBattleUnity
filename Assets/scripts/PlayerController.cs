@@ -114,8 +114,8 @@ public class PlayerController : NetworkBehaviour {
 
 				float timeOut = Time.time + 2f;
 
-				while (!isFreeSpawner && Time < timeOut) {
-					NetworkStartPosition startPoint = spawnPoints[Random.Range(0, spawnPoints.Length)].transform.position;
+				while (!isFreeSpawner && Time.time < timeOut) {
+					NetworkStartPosition startPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
 					SpawnPoint spawnPoint = startPoint.GetComponent<SpawnPoint>();
 
 					if (spawnPoint.IsOccupied == false) {

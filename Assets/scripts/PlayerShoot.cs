@@ -8,6 +8,10 @@ public class PlayerShoot : NetworkBehaviour {
 	private Rigidbody bulletPrefab;
 	[SerializeField]
 	private Transform bulletSpawn;
+	[SerializeField]
+	private ParticleSystem misfireEffect;
+	[SerializeField]
+	private LayerMask obstacleMask;
 
 	private int shotsPerBurst = 2;
 	private int shotsLeft;
@@ -24,12 +28,27 @@ public class PlayerShoot : NetworkBehaviour {
 			return;
 		}
 
-		CmdShoot();
+		RaycastHit hit;
+		
+		Vector3 centre = new Vector3(transform.position.x, bulletSpawn.position.y, transform.position.z);
 
-		shotsLeft--;
+		Vector3 dir = (bulletSpawn.position - centre).normalized;
 
-		if (shotsLeft <= 0) {
-			StartCoroutine(Reload());
+		if (Physics.SphereCast(centre, 0.25f, dir, out hit, 2.5f, obstacleMask, QueryTriggerInteraction.Ignore)) {
+			if (misfireEffect != null) {
+				ParticleSystem effect = Instantiate(misfireEffect, hit.point, Quaternion.identity) as ParticleSystem;
+				effect.Stop();
+				effect.Play();
+				Destroy(effect.gameObject, 3f);
+			}
+		} else {
+			CmdShoot();
+
+			shotsLeft--;
+
+			if (shotsLeft <= 0) {
+				StartCoroutine(Reload());
+			}
 		}
 	}
 
