@@ -35,7 +35,7 @@ public class PlayerHealth : NetworkBehaviour {
 			return;
 		}
 
-		if (pc != null) {
+		if (pc != null && pc != this.GetComponent<PlayerController>()) {
 			lastAttacker = pc;
 		}
 
