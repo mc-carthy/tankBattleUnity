@@ -22,6 +22,11 @@ public class PlayerSetup : NetworkBehaviour {
 
 	[SerializeField]
 	private Text playerNameText;
+	public Text PlayerNameText {
+		get {
+			return playerNameText;
+		}
+	}
 
 	private string baseName = "Player";
 
