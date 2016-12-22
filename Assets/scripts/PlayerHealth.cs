@@ -66,7 +66,7 @@ public class PlayerHealth : NetworkBehaviour {
 
 		SetActiveState(false);
 
-		gameObject.SendMessage("Disable");
+		gameObject.SendMessage("Respawn");
 	}
 
 	private void SetActiveState (bool state) {

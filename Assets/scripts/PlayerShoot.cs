@@ -4,6 +4,16 @@ using System.Collections;
 
 public class PlayerShoot : NetworkBehaviour {
 
+	private bool isAbleToShoot;
+	public bool IsAbleToShoot {
+		get {
+			return isAbleToShoot;
+		}
+		set {
+			isAbleToShoot = value;
+		}
+	}
+
 	[SerializeField]
 	private Rigidbody bulletPrefab;
 	[SerializeField]
@@ -24,7 +34,7 @@ public class PlayerShoot : NetworkBehaviour {
 	}
 
 	public void Shoot () {
-		if (isReloading || bulletPrefab == null) {
+		if (isReloading || bulletPrefab == null || !isAbleToShoot) {
 			return;
 		}
 

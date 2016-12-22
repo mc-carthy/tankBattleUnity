@@ -122,11 +122,19 @@ public class GameManager : NetworkBehaviour {
 	}
 
 	private void EnablePlayers () {
-
+		for (int i = 0; i < allPlayers.Count; i++) {
+			if (allPlayers[i] != null) {
+				allPlayers[i].EnableControls();
+			}
+		}
 	}
 
 	private void DisablePlayers () {
-
+		for (int i = 0; i < allPlayers.Count; i++) {
+			if (allPlayers[i] != null) {
+				allPlayers[i].DisableControls();
+			}
+		}
 	}
 
 	// [ClientRpcAttribute]

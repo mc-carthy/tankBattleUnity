@@ -88,7 +88,17 @@ public class PlayerManager : NetworkBehaviour {
 		return new Vector3 (h, 0, v);
 	}
 
-	private void Disable () {
+	public void EnableControls () {
+		pMotor.IsAbleToMove = true;
+		pShoot.IsAbleToShoot = true;
+	}
+
+	public void DisableControls () {
+		pMotor.IsAbleToMove = false;
+		pShoot.IsAbleToShoot = false;
+	}
+
+	private void Respawn () {
 		StartCoroutine(RespawnRoutine());
 	}
 
@@ -109,6 +119,7 @@ public class PlayerManager : NetworkBehaviour {
 			GameObject spawnFx = Instantiate(spawnFxPrefab, transform.position + Vector3.up * 0.5f, Quaternion.identity) as GameObject;
 			Destroy(spawnFx, 3f);
 		}
+		EnableControls();
 	}
 
 	private Vector3 GetRandomSpawnPoint () {

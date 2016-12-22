@@ -9,7 +9,20 @@ public class PlayerMotor : NetworkBehaviour {
 		get {
 			return rb;
 		}
-	}	
+	}
+
+	private bool isAbleToMove;
+	public bool IsAbleToMove {
+		get {
+			return isAbleToMove;
+		}
+		set {
+			if (value == false) {
+				rb.velocity = Vector3.zero;
+			}
+			isAbleToMove = value;
+		}
+	}
 
 	[SerializeField]
 	private Transform chassis;
@@ -33,12 +46,14 @@ public class PlayerMotor : NetworkBehaviour {
 	}
 
 	public void MovePlayer (Vector3 dir) {
-		Vector3 moveDirection = dir * moveSpeed * Time.deltaTime;
-		rb.velocity = moveDirection;
+		if (isAbleToMove) {
+			Vector3 moveDirection = dir * moveSpeed * Time.deltaTime;
+			rb.velocity = moveDirection;
+		}
 	}
 
 	private void FaceDirection (Transform xform, Vector3 dir, float rotSpeed) {
-		if (dir != Vector3.zero && xform != null) {
+		if (dir != Vector3.zero && xform != null && isAbleToMove) {
 			Quaternion desiredRot = Quaternion.LookRotation(dir);
 
 			xform.rotation = Quaternion.Slerp(xform.rotation, desiredRot, rotSpeed * Time.deltaTime);
