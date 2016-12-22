@@ -13,12 +13,22 @@ public class PlayerSetup : NetworkBehaviour {
 	}
 
 	[SyncVarAttribute(hook="UpdateName")]
-	private int playerNum;
-	public int PlayerNum {
+	private string playerName = "Player";
+	public string PlayerName {
+		get {
+			return playerName;
+		}
 		set {
-			playerNum = value;
+			playerName = value;
 		}
 	}
+
+	// private int playerNum;
+	// public int PlayerNum {
+	// 	set {
+	// 		playerNum = value;
+	// 	}
+	// }
 
 	[SerializeField]
 	private Text playerNameText;
@@ -28,21 +38,13 @@ public class PlayerSetup : NetworkBehaviour {
 		}
 	}
 
-	private string baseName = "Player";
-
 	private void Start () {
-		if (!isLocalPlayer) {
-			UpdateName(playerNum);
-			UpdateColor(playerColor);
-		}
+		UpdateName(playerName);
+		UpdateColor(playerColor);
 	}
 
 	public override void OnStartClient () {
 		base.OnStartClient();
-
-		if (playerNameText != null) {
-			playerNameText.enabled = false;
-		}
 	}
 
 	public override void OnStartLocalPlayer () {
@@ -58,10 +60,10 @@ public class PlayerSetup : NetworkBehaviour {
 		}
 	}
 
-	private void UpdateName (int pNum) {
+	private void UpdateName (string pName) {
 		if (playerNameText != null) {
 			playerNameText.enabled = true;
-			playerNameText.text = baseName + pNum.ToString();
+			playerNameText.text = pName;
 		}
 	}
 

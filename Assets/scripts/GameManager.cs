@@ -36,7 +36,7 @@ public class GameManager : NetworkBehaviour {
 
 	private Color[] playerColors = { Color.red, Color.blue, Color.green, Color.yellow };
 	private PlayerManager winner;
-	private int minPlayers = 2;
+	private int minPlayers = 1;
 	private int maxPlayers = 4;
 	private int maxScore = 3;
 
@@ -57,7 +57,7 @@ public class GameManager : NetworkBehaviour {
 			allPlayers.Add(pSetup.GetComponent<PlayerManager>());
 			pSetup.PlayerColor = playerColors[playerCount];
 			playerCount++;
-			pSetup.PlayerNum = playerCount;
+			//pSetup.PlayerNum = playerCount;
 		}
 	}
 
