@@ -8,6 +8,13 @@ using System.Collections;
 [RequireComponent(typeof(PlayerShoot))]
 public class PlayerController : NetworkBehaviour {
 
+	private PlayerSetup pSetup;
+	public PlayerSetup PSetup {
+		get {
+			return pSetup;
+		}
+	}
+	
 	private int score;
 	public int Score {
 		get {
@@ -23,7 +30,6 @@ public class PlayerController : NetworkBehaviour {
 
 	private PlayerHealth pHealth;
 	private PlayerMotor pMotor;
-	private PlayerSetup pSetup;
 	private PlayerShoot pShoot;
 
 	private NetworkStartPosition[] spawnPoints;
