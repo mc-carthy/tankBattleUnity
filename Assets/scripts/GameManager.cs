@@ -34,7 +34,7 @@ public class GameManager : NetworkBehaviour {
 	[SerializeField]
 	private List<Text> playerScoreText;
 
-	private Color[] playerColors = { Color.red, Color.blue, Color.green, Color.yellow };
+	// private Color[] playerColors = { Color.red, Color.blue, Color.green, Color.yellow };
 	private PlayerManager winner;
 	private int minPlayers = 1;
 	private int maxPlayers = 4;
@@ -53,12 +53,12 @@ public class GameManager : NetworkBehaviour {
 	}
 
 	public void AddPlayer (PlayerSetup pSetup) {
-		if (playerCount < maxPlayers) {
-			allPlayers.Add(pSetup.GetComponent<PlayerManager>());
-			pSetup.PlayerColor = playerColors[playerCount];
-			playerCount++;
-			//pSetup.PlayerNum = playerCount;
-		}
+		// if (playerCount < maxPlayers) {
+		// 	allPlayers.Add(pSetup.GetComponent<PlayerManager>());
+		// 	// pSetup.PlayerColor = playerColors[playerCount];
+		// 	playerCount++;
+		// 	//pSetup.PlayerNum = playerCount;
+		// }
 	}
 
 	public void UpdateScoreboard () {
